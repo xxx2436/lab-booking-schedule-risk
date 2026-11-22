@@ -44,3 +44,12 @@ def test_cycle_is_rejected() -> None:
     ]
     with pytest.raises(ValueError, match="循环依赖"):
         topological_order(tasks)
+
+
+def test_beta_pert_samples_stay_in_bounds() -> None:
+    """验证 Beta-PERT 抽样始终落在 [a, b] 区间内。"""
+    task = make_task("A", (), 2, 3, 5)
+    samples = sample_beta_pert([task], 10000, np.random.default_rng(7))
+    assert samples.shape == (10000, 1)
+    assert np.all(samples >= 2)
+    assert np.all(samples <= 5)

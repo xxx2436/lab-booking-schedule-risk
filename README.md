@@ -8,6 +8,7 @@
 - 以 PERT 期望工期 `(a + 4m + b) / 6` 计算 CPM 确定性基准。
 - 使用 Beta-PERT 分布开展默认 10,000 次蒙特卡洛模拟。
 - 输出项目总工期分布、截止日期按期概率、Pearson/Spearman 敏感度、关键路径出现频率和单因素龙卷风分析。
+- 随附缓解情景脚本，用于量化接口契约冻结与自动化回归对工期风险的预期影响。
 
 ## 仓库结构
 
@@ -17,6 +18,7 @@
 ├─ src/simulate.py         # CPM 与蒙特卡洛仿真主程序
 ├─ tests/test_simulate.py  # 单元测试
 ├─ outputs/                # 已生成的结果表、图表和 10,000 次仿真明细
+├─ scripts/                # 补充分析脚本（含缓解情景）
 ├─ docs/                   # 运行复现说明与提交前检查清单
 ├─ requirements.txt        # Python 依赖
 └─ .github/workflows/      # 自动测试工作流
@@ -50,6 +52,8 @@ python -m src.simulate --runs 10000 --seed 20261115 --deadline 70 --deadline 80 
 python -m pytest -q
 ```
 
+测试覆盖 PERT 期望工期、常数工期抽样、Beta-PERT 抽样边界、网络计划计算与循环依赖拒绝。
+
 运行后将覆盖 `outputs/` 中的同名结果文件。相同输入、相同参数与随机种子下，结果可复现；改变随机种子后，抽样结果会产生合理波动。
 
 ## 已生成结果概览
@@ -66,6 +70,14 @@ python -m pytest -q
 | 90 工作日按期概率 | 91.53% |
 
 详细字段、图表说明和文件对应关系见 [docs/运行与复现说明.md](docs/运行与复现说明.md)。
+
+如需复现报告中的缓解情景结果，可运行：
+
+```powershell
+python scripts/run_mitigation_scenario.py
+```
+
+该脚本仅将 T14、T16 的悲观工期分别从 16、20 收敛至 12、17 工作日；其余输入、模拟次数和随机种子不变，并将结果写入 `outputs/mitigation_scenario_summary.csv`。
 
 ## 代码与结果说明
 

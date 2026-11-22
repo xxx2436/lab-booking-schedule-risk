@@ -266,17 +266,22 @@ def write_outputs(
     """生成全部结果表、可复现配置和所需图表。"""
     output_dir.mkdir(parents=True, exist_ok=True)
     cpm_es, cpm_ef, cpm_ls, cpm_lf, cpm_float = cpm_schedule
+
+    def clean_schedule_value(value: float) -> float:
+        """清除浮点计算在进度表中产生的近零残差。"""
+        return 0.0 if abs(value) <= CRITICAL_TOLERANCE else float(value)
+
     cpm_rows = []
     for index, task in enumerate(tasks):
         cpm_rows.append({
             "任务ID": task.task_id,
             "任务名称": task.name,
             "CPM确定性工期_PERT期望值": task.pert_mean,
-            "最早开始ES": cpm_es[index],
-            "最早完成EF": cpm_ef[index],
-            "最迟开始LS": cpm_ls[index],
-            "最迟完成LF": cpm_lf[index],
-            "总时差TF": cpm_float[index],
+            "最早开始ES": clean_schedule_value(cpm_es[index]),
+            "最早完成EF": clean_schedule_value(cpm_ef[index]),
+            "最迟开始LS": clean_schedule_value(cpm_ls[index]),
+            "最迟完成LF": clean_schedule_value(cpm_lf[index]),
+            "总时差TF": clean_schedule_value(cpm_float[index]),
             "CPM关键任务": "是" if abs(cpm_float[index]) <= CRITICAL_TOLERANCE else "否",
         })
     write_csv(output_dir / "cpm_schedule.csv", cpm_rows, list(cpm_rows[0]))
