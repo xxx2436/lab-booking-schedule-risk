@@ -32,6 +32,8 @@
 python -m pip install -r requirements.txt
 ```
 
+依赖版本已锁定为 NumPy 2.1.1、Matplotlib 3.9.2 与 pytest 9.2.0。图表优先使用“Microsoft YaHei”或“SimHei”；在 Linux 等非 Windows 环境中，请安装 `Noto Sans CJK SC`，以保证简体中文标签正常显示。
+
 ## 运行仿真
 
 默认运行 10,000 次模拟，未指定截止日期时自动使用 CPM 基准工期：
@@ -77,7 +79,7 @@ python -m pytest -q
 python scripts/run_mitigation_scenario.py
 ```
 
-该脚本仅将 T14、T16 的悲观工期分别从 16、20 收敛至 12、17 工作日；其余输入、模拟次数和随机种子不变，并将结果写入 `outputs/mitigation_scenario_summary.csv`。
+该脚本仅将 T14、T16 的悲观工期分别从 16、20 收敛至 12、17 工作日；其余输入保持不变。脚本同时生成固定种子情景结果，以及 20 个随机种子的重复实验结果，分别写入 `outputs/mitigation_scenario_summary.csv` 与 `outputs/mitigation_scenario_replications.csv`。
 
 ## 代码与结果说明
 

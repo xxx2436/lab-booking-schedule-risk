@@ -11,6 +11,8 @@
 - `cpm_vs_monte_carlo.csv`：CPM 与蒙特卡洛主要工期统计量对比。
 - `tornado_analysis.csv`：单因素工期影响分析。
 - `config_used.json`：可复现实验配置。
+- `mitigation_scenario_summary.csv`：固定随机种子下的风险缓解情景统计量与按期概率。
+- `mitigation_scenario_replications.csv`：20 个随机种子下原始与缓解情景的重复实验结果。
 - `task_network.png`：标注 CPM 关键任务的任务依赖网络图。
 - `task_duration_boxplot.png`：各任务工期箱线图。
 - `project_duration_histogram.png`：项目工期分布直方图。
